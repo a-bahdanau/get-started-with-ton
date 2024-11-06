@@ -2,7 +2,7 @@
     "name": "get-started-with-ton",
     "version": "0.0.1",
     "scripts": {
-        "start:script": "ts-node",
+        "start:script": "ts-node ./scripts/mine.ts",
         "start": "blueprint run",
         "build": "blueprint build",
         "test": "jest --verbose"

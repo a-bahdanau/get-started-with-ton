@@ -173,14 +173,14 @@ export class NftGiver implements Contract {
     }
 
     async getCollectionData(provider: ContractProvider): Promise<{
-        nextItemId: number,
+        nextItemId: bigint,
         ownerAddress: Address,
         collectionContent: string
     }> {
         let { stack } = await provider.get('get_collection_data', []);
 
         return {
-            nextItemId: stack.readNumber(),
+            nextItemId: stack.readBigNumber(),
             collectionContent: decodeOffChainContent(stack.readCell()),
             ownerAddress: stack.readAddress()
         };
@@ -282,6 +282,15 @@ export class NftGiver implements Contract {
             bounce: false,
             sendMode: SendMode.PAY_GAS_SEPARATELY,
             body: Queries.rescaleComplexity(params)
+        });
+    }
+
+    async sendDeploy(provider: ContractProvider, via: Sender, value: bigint = toNano(1)) {
+        return provider.internal(via, {
+            value,
+            bounce: false,
+            sendMode: SendMode.PAY_GAS_SEPARATELY,
+            body: beginCell().endCell()
         });
     }
 }
